@@ -109,8 +109,9 @@ jQuery.element({
 		val: function( v ) {
 			if ( !arguments.length ) {
 				return this.elContainer.value;
+			} else if ( !curSlider ) {
+				this._setVal( v );
 			}
-			this._setVal( v );
 		},
 
 		// private:
