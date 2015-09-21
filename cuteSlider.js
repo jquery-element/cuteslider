@@ -1,15 +1,19 @@
 /*
-	cuteSlider - 1.1.0
+	cuteSlider - 1.1.1
 	https://github.com/jquery-element/cuteSlider
 */
 
 (function() {
 
-var curSlider;
+var
+	curSlider,
+	jqBody = $( "body" )
+;
 
 function mouseup() {
 	if ( curSlider ) {
 		curSlider.jqElement.removeClass( "focus" );
+		jqBody.removeClass( "user-select-none" );
 		curSlider = null;
 	}
 }
@@ -28,14 +32,16 @@ $( document )
 jQuery.element({
 	name: "cuteSlider",
 	css: "\
-		.cuteSlider {\
-			display: inline-block;\
-			position: relative;\
-			cursor: pointer;\
+		.user-select-none {\
 			-webkit-user-select: none;\
 			   -moz-user-select: none;\
 			    -ms-user-select: none;\
 			        user-select: none;\
+		}\
+		.cuteSlider {\
+			display: inline-block;\
+			position: relative;\
+			cursor: pointer;\
 		}\
 		.cuteSlider input {\
 			display: none;\
@@ -97,6 +103,7 @@ jQuery.element({
 			.mousedown( function( e ) {
 				if ( e.button === 0 ) {
 					curSlider = that;
+					jqBody.addClass( "user-select-none" );
 					jqEl.addClass( "focus" );
 					that._moveThumb( e.pageX );
 				}
