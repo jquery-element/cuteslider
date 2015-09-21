@@ -1,5 +1,5 @@
 /*
-	cuteSlider - 1.0.0
+	cuteSlider - 1.1.0
 	https://github.com/jquery-element/cuteSlider
 */
 
@@ -126,7 +126,6 @@ jQuery.element({
 			this.jqTrackLower.css( "width", vPerc );
 			if ( Math.abs( this.elContainer.value - v ) >= r.step / 2 ) {
 				this.elContainer.value = v;
-				this.jqRng.change();
 			}
 		},
 		_moveThumb: function( mouseX ) {
@@ -138,6 +137,7 @@ jQuery.element({
 				min = +rng.min
 			;
 			this._setVal( min + x * ( rng.max - min ) );
+			this.jqRng.change();
 		}
 	}
 });
