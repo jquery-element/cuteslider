@@ -1,5 +1,5 @@
 /*
-	cuteSlider - 1.1.1
+	cuteSlider - 1.1.2
 	https://github.com/jquery-element/cuteSlider
 */
 
@@ -127,7 +127,7 @@ jQuery.element({
 				vPerc,
 				r = this.elRng
 			;
-			r.value = v;
+			r.value = v || 0;
 			v = r.value;
 			vPerc = ( ( v - r.min ) / ( r.max - r.min ) ) * 100 + "%";
 			this.jqThumb.css( "left", vPerc );
