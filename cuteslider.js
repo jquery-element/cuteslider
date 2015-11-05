@@ -94,15 +94,15 @@ jQuery.element({
 			margin: 0 0 -7px -7px;\
 		}\
 	",
-	htmlReplace: '\
-		<div class="cuteslider">\
-			{{html}}\
-			<div class="cuteslider-track"\
-				><div class="cuteslider-track-lower"></div\
-			></div\
-			><div class="cuteslider-thumb"></div\
-		></div>\
-	',
+	htmlReplace:
+		"<div class='cuteslider'>"+
+			"{{html}}"+
+			"<div class='cuteslider-track'>"+
+				"<div class='cuteslider-track-lower'></div>"+
+			"</div>"+
+			"<div class='cuteslider-thumb'></div>"+
+		"</div>"
+	,
 	init: function() {
 		var
 			that = this,
