@@ -166,19 +166,23 @@ jQuery.element({
 			var
 				rng = this.elRng,
 				min = +rng.min,
-				oldValue = rng.value,
+				oldValue = +rng.value,
+				step = rng.step / 4,
 				track = this.jqTrack,
 				os = track.offset(),
+				val = mouse - ( this.isVertical ? os.top : os.left ),
 				trackSize = this.isVertical ? track.height() : track.width()
 			;
 
-			mouse -= this.isVertical ? os.top : os.left;
 			if ( this.isVertical ) {
-				mouse = trackSize - mouse;
+				val = trackSize - val;
 			}
+			val = min + val / trackSize * ( rng.max - min );
 
-			this._setVal( min + mouse / trackSize * ( rng.max - min ) );
-			if ( rng.value !== oldValue ) {
+			this._setVal( val );
+			val = +rng.value;
+
+			if ( val < oldValue - step || val > oldValue + step ) {
 				this.jqRng.change();
 			}
 		}
