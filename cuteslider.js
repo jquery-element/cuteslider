@@ -118,7 +118,6 @@ jQuery.element({
 
 		this.isVertical = this.elRng.dataset.cutesliderVertical != null;
 		jqEl.addClass( this.isVertical ? "cuteslider-vertical" : "cuteslider-horizontal" );
-		this.elContainer.value = 0;
 		this._setVal( this.elRng.value );
 
 		jqEl
@@ -151,12 +150,11 @@ jQuery.element({
 			;
 
 			r.value = v || 0;
-			v = r.value;
-			vPerc = ( ( v - r.min ) / ( r.max - r.min ) ) * 100 + "%";
-			this.jqThumb.css( this.isVertical ? "bottom" : "left", vPerc );
-			this.jqTrackLower.css( this.isVertical ? "height" : "width", vPerc );
-
-			if ( Math.abs( this.elContainer.value - v ) >= r.step / 2 ) {
+			v = +r.value;
+			if ( this.elContainer.value !== v ) {
+				vPerc = ( ( v - r.min ) / ( r.max - r.min ) ) * 100 + "%";
+				this.jqThumb.css( this.isVertical ? "bottom" : "left", vPerc );
+				this.jqTrackLower.css( this.isVertical ? "height" : "width", vPerc );
 				this.elContainer.value = v;
 			}
 		},
@@ -164,6 +162,7 @@ jQuery.element({
 			var
 				rng = this.elRng,
 				min = +rng.min,
+				oldValue = rng.value,
 				track = this.jqTrack,
 				os = track.offset(),
 				trackSize = this.isVertical ? track.height() : track.width()
@@ -173,8 +172,11 @@ jQuery.element({
 			if ( this.isVertical ) {
 				mouse = trackSize - mouse;
 			}
+
 			this._setVal( min + mouse / trackSize * ( rng.max - min ) );
-			this.jqRng.change();
+			if ( rng.value !== oldValue ) {
+				this.jqRng.change();
+			}
 		}
 	}
 });
