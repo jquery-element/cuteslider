@@ -8,12 +8,10 @@
 			background: #222;
 		}
 		.cuteslider-horizontal {
-			display: inline-block;
 			width: 150px;
 			height: 24px;
 		}
 		.cuteslider-vertical {
-			display: inline-block;
 			width: 24px;
 			height: 150px;
 		}
@@ -23,8 +21,8 @@
 	<script src="cuteslider.js"></script>
 	<script>
 	$(function() {
-		$( ".myCuteslider" ).change( function() {
-			console.log( ".myCuteslider: " + this.value );
+		$( ".cuteslider" ).change( function() {
+			console.log( ".cuteslider: " + this.value );
 		});
 		$( "input" ).change( function() {
 			console.log( "input: " + this.value );
@@ -37,7 +35,6 @@
 <input
 	type="range"
 	data-jquery-element="cuteslider"
-	data-jquery-element-class="myCuteslider"
 	min="-10" value="0" max="10" step="2"
 />
 
