@@ -151,7 +151,7 @@ jQuery.element({
 			;
 
 			r.value = v || 0;
-			v = this.isVertical ? -r.value : r.value;
+			v = r.value;
 			vPerc = ( ( v - r.min ) / ( r.max - r.min ) ) * 100 + "%";
 			this.jqThumb.css( this.isVertical ? "bottom" : "left", vPerc );
 			this.jqTrackLower.css( this.isVertical ? "height" : "width", vPerc );
@@ -160,21 +160,20 @@ jQuery.element({
 				this.elContainer.value = v;
 			}
 		},
-		_moveThumb: function( mouseP ) {
+		_moveThumb: function( mouse ) {
 			var
-				trackPos =
-					this.isVertical ?
-						this.jqTrack.offset().top :
-						this.jqTrack.offset().left,
-				trackSize =
-					this.isVertical ?
-						this.jqTrack.height() :
-						this.jqTrack.width()
-				x = ( mouseP - ( trackPos ) ) / ( trackSize ),
 				rng = this.elRng,
-				min = +rng.min
+				min = +rng.min,
+				track = this.jqTrack,
+				os = track.offset(),
+				trackSize = this.isVertical ? track.height() : track.width()
 			;
-			this._setVal( min + x * ( rng.max - min ) );
+
+			mouse -= this.isVertical ? os.top : os.left;
+			if ( this.isVertical ) {
+				mouse = trackSize - mouse;
+			}
+			this._setVal( min + mouse / trackSize * ( rng.max - min ) );
 			this.jqRng.change();
 		}
 	}
