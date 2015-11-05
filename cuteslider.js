@@ -7,7 +7,7 @@
 
 var
 	curSlider,
-	jqBody = $( "body" )
+	jqBody
 ;
 
 function mouseup() {
@@ -18,16 +18,20 @@ function mouseup() {
 	}
 }
 
-$( window ).blur( mouseup );
+$(function() {
+	jqBody = $( document.body );
 
-$( document )
-	.mouseup( mouseup )
-	.mousemove( function( e ) {
-		if ( curSlider ) {
-			curSlider._moveThumb( curSlider.isVertical ? e.pageY : e.pageX );
-		}
-	})
-;
+	$( window ).blur( mouseup );
+
+	$( document )
+		.mouseup( mouseup )
+		.mousemove( function( e ) {
+			if ( curSlider ) {
+				curSlider._moveThumb( curSlider.isVertical ? e.pageY : e.pageX );
+			}
+		})
+	;
+});
 
 jQuery.element({
 	name: "cuteslider",
