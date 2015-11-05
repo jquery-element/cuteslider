@@ -7,32 +7,44 @@
 			margin: 100px;
 			background: #222;
 		}
-		.cuteSlider {
+		.cuteslider-horizontal {
 			display: inline-block;
 			width: 150px;
 			height: 24px;
 		}
+		.cuteslider-vertical {
+			display: inline-block;
+			width: 24px;
+			height: 150px;
+		}
 	</style>
 	<script src="//code.jquery.com/jquery-3.0.0-alpha1.min.js"></script>
-	<script src="../jquery-element/jquery-element.js"></script>
+	<script src="//jquery-element.github.io/dist/jquery-element-1.7.0.js"></script>
 	<script src="cuteslider.js"></script>
 	<script>
 	$(function() {
-		$( ".myCuteSlider" ).change( function() {
-			console.log( ".myCuteSlider: " + this.value );
+		$( ".myCuteslider" ).change( function() {
+			console.log( ".myCuteslider: " + this.value );
 		});
 		$( "input" ).change( function() {
 			console.log( "input: " + this.value );
 		});
 	});
 	</script>
-</head>	
+</head>
 <body>
 
 <input
 	type="range"
-	data-jquery-element="cuteSlider"
-	data-jquery-element-class="myCuteSlider"
+	data-jquery-element="cuteslider"
+	data-jquery-element-class="myCuteslider"
+	min="-10" value="0" max="10" step="2"
+/>
+
+<input
+	type="range"
+	data-jquery-element="cuteslider"
+	data-cuteslider-vertical
 	min="-10" value="0" max="10" step="2"
 />
 

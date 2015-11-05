@@ -1,6 +1,6 @@
 /*
-	cuteSlider - 1.1.2
-	https://github.com/jquery-element/cuteSlider
+	cuteslider - 2.0.0
+	https://github.com/jquery-element/cuteslider
 */
 
 (function() {
@@ -24,13 +24,13 @@ $( document )
 	.mouseup( mouseup )
 	.mousemove( function( e ) {
 		if ( curSlider ) {
-			curSlider._moveThumb( e.pageX );
+			curSlider._moveThumb( curSlider.isVertical ? e.pageY : e.pageX );
 		}
 	})
 ;
 
 jQuery.element({
-	name: "cuteSlider",
+	name: "cuteslider",
 	css: "\
 		.user-select-none {\
 			-webkit-user-select: none;\
@@ -38,50 +38,70 @@ jQuery.element({
 			    -ms-user-select: none;\
 			        user-select: none;\
 		}\
-		.cuteSlider {\
+		.cuteslider {\
 			display: inline-block;\
 			position: relative;\
 			cursor: pointer;\
 		}\
-		.cuteSlider input {\
+		.cuteslider input {\
 			display: none;\
 		}\
-		.cuteSlider-track {\
+		.cuteslider-track {\
 			position: absolute;\
 			overflow: hidden;\
+			border-radius: 2px;\
+			background: #888;\
+		}\
+		.cuteslider-horizontal .cuteslider-track {\
 			width: 100%;\
 			top: 50%;\
 			height: 4px;\
 			margin-top: -2px;\
-			border-radius: 2px;\
-			background: #888;\
 		}\
-		.cuteSlider-track-lower,\
-		.cuteSlider-thumb {\
+		.cuteslider-vertical .cuteslider-track {\
+			width: 4px;\
+			height: 100%;\
+			left: 50%;\
+			margin-left: -2px;\
+		}\
+		.cuteslider-track-lower,\
+		.cuteslider-thumb {\
 			background: #f33;\
 		}\
-		.cuteSlider-track-lower {\
+		.cuteslider-horizontal .cuteslider-track-lower {\
 			width: 0;\
 			height: 100%;\
 		}\
-		.cuteSlider-thumb {\
+		.cuteslider-vertical .cuteslider-track-lower {\
 			position: absolute;\
-			left: 0;\
-			top: 50%;\
+			bottom: 0;\
+			width: 100%;\
+		}\
+		.cuteslider-thumb {\
+			position: absolute;\
 			width: 14px;\
 			height: 14px;\
-			margin: -7px 0 0 -7px;\
 			border-radius: 50%;\
+		}\
+		.cuteslider-horizontal .cuteslider-thumb {\
+			left: 0;\
+			top: 50%;\
+			margin: -7px 0 0 -7px;\
+		}\
+		.cuteslider-vertical .cuteslider-thumb {\
+			left: 50%;\
+			bottom: 0;\
+			margin: 0 0 -7px -7px;\
 		}\
 	",
 	htmlReplace: '\
-		<div class="cuteSlider">\
+		<div class="cuteslider">\
 			{{html}}\
-			<div class="cuteSlider-track">\
-				<div class="cuteSlider-track-lower"></div>\
-			</div>\
-			<div class="cuteSlider-thumb"></div>\
-		</div>\
+			<div class="cuteslider-track"\
+				><div class="cuteslider-track-lower"></div\
+			></div\
+			><div class="cuteslider-thumb"></div\
+		></div>\
 	',
 	init: function() {
 		var
@@ -90,12 +110,14 @@ jQuery.element({
 		;
 
 		this.elContainer = jqEl[ 0 ],
-		this.jqTrack = $( ".cuteSlider-track", jqEl );
-		this.jqTrackLower = $( ".cuteSlider-track-lower", this.jqTrack );
-		this.jqThumb = $( ".cuteSlider-thumb", jqEl );
+		this.jqTrack = $( ".cuteslider-track", jqEl );
+		this.jqTrackLower = $( ".cuteslider-track-lower", this.jqTrack );
+		this.jqThumb = $( ".cuteslider-thumb", jqEl );
 		this.jqRng = $( "input", jqEl ),
 		this.elRng = this.jqRng[ 0 ];
 
+		this.isVertical = this.elRng.dataset.cutesliderVertical != null;
+		jqEl.addClass( this.isVertical ? "cuteslider-vertical" : "cuteslider-horizontal" );
 		this.elContainer.value = 0;
 		this._setVal( this.elRng.value );
 
@@ -105,7 +127,7 @@ jQuery.element({
 					curSlider = that;
 					jqBody.addClass( "user-select-none" );
 					jqEl.addClass( "focus" );
-					that._moveThumb( e.pageX );
+					that._moveThumb( that.isVertical ? e.pageY : e.pageX );
 				}
 			})
 		;
@@ -127,20 +149,28 @@ jQuery.element({
 				vPerc,
 				r = this.elRng
 			;
+
 			r.value = v || 0;
-			v = r.value;
+			v = this.isVertical ? -r.value : r.value;
 			vPerc = ( ( v - r.min ) / ( r.max - r.min ) ) * 100 + "%";
-			this.jqThumb.css( "left", vPerc );
-			this.jqTrackLower.css( "width", vPerc );
+			this.jqThumb.css( this.isVertical ? "bottom" : "left", vPerc );
+			this.jqTrackLower.css( this.isVertical ? "height" : "width", vPerc );
+
 			if ( Math.abs( this.elContainer.value - v ) >= r.step / 2 ) {
 				this.elContainer.value = v;
 			}
 		},
-		_moveThumb: function( mouseX ) {
+		_moveThumb: function( mouseP ) {
 			var
-				trackX = this.jqTrack.offset().left,
-				trackW = this.jqTrack.width(),
-				x = ( mouseX - trackX ) / trackW,
+				trackPos =
+					this.isVertical ?
+						this.jqTrack.offset().top :
+						this.jqTrack.offset().left,
+				trackSize =
+					this.isVertical ?
+						this.jqTrack.height() :
+						this.jqTrack.width()
+				x = ( mouseP - ( trackPos ) ) / ( trackSize ),
 				rng = this.elRng,
 				min = +rng.min
 			;
