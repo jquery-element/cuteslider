@@ -178,10 +178,8 @@ jQuery.element({
 				val = trackSize - val;
 			}
 			val = min + val / trackSize * ( rng.max - min );
-
 			this._setVal( val );
 			val = +rng.value;
-
 			if ( val < oldValue - step || val > oldValue + step ) {
 				this.jqRng.change();
 			}
