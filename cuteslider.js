@@ -1,5 +1,5 @@
 /*
-	cuteslider - 2.0.0
+	cuteslider - 2.0.1
 	https://github.com/jquery-element/cuteslider
 */
 
@@ -71,6 +71,9 @@ jQuery.element({
 		.cuteslider-track-lower,\
 		.cuteslider-thumb {\
 			background: #f33;\
+		}\
+		.cuteslider-track-lower {\
+			border-radius: inherit;\
 		}\
 		.cuteslider-horizontal .cuteslider-track-lower {\
 			width: 0;\
