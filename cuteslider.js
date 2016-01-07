@@ -1,5 +1,5 @@
 /*
-	cuteslider - 2.0.1
+	cuteslider - 2.1.0
 	https://github.com/jquery-element/cuteslider
 */
 
@@ -136,6 +136,15 @@ jQuery.element({
 					that._moveThumb( that.isVertical ? e.pageY : e.pageX );
 				}
 			})
+			.on( "wheel", function( e ) {
+				var
+					r = that.elRng,
+					step = e.originalEvent.deltaY < 0 ? +r.step : -r.step
+				;
+
+				that._setVal( +r.value + step );
+				that.jqRng.change();
+			})
 		;
 	},
 	prototype: {
@@ -144,7 +153,8 @@ jQuery.element({
 		val: function( v ) {
 			if ( !arguments.length ) {
 				return this.elContainer.value;
-			} else if ( !curSlider ) {
+			}
+			if ( !curSlider ) {
 				this._setVal( v );
 			}
 		},
